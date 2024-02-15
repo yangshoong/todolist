@@ -34,19 +34,35 @@ let taskList = [];
 let mode = "all";
 let filterList = [];
 let list = [];
-addButton.addEventListener("click", addTask);
+
+addButton.addEventListener("click", function (event) {
+  if (taskInput.value.trim() === "") {
+    alert("내용을 입력해주세요");
+    return;
+  }
+  addTask();
+  render();
+});
+
+
 taskInput.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
+    if(taskInput.value.trim()===""){
+      alert("내용을 입력해주세요");
+      return;
+    }
     addTask();
-    event.preventDefault();
+    render();
   }
 });
 
 for (let i = 1; i < tabs.length; i++) {
   tabs[i].addEventListener("click", function (event) {
     filter(event);
+    render();
   });
 }
+
 
 function addTask() {
   let task = {
@@ -121,18 +137,16 @@ function deleteTask(id) {
 }
 
 function filter(event) {
-  console.log("filter", event.target.id);
   mode = event.target.id;
   filterList = [];
   if (mode === "all") {
     render();
   } else if (mode === "ongoing") {
-    for (let i = 0; i < list.length; i++) {
+    for (let i = 0; i < taskList.length; i++) {
       if (taskList[i].isComplete === false) {
         filterList.push(taskList[i]);
       }
     }
-    console.log(filterList);
     render();
   } else if (mode === "done") {
     for (let i = 0; i < taskList.length; i++) {
@@ -140,7 +154,6 @@ function filter(event) {
         filterList.push(taskList[i]);
       }
     }
-    console.log(filterList);
     render();
   }
 }
