@@ -12,11 +12,48 @@
 let taskInput = document.getElementById("task-input");
 let addButton = document.getElementById("add-button");
 let tabs = document.querySelectorAll(".task-tabs div");
+let underLine = document.getElementById("under-line");
+
+document.addEventListener("DOMContentLoaded", function () {
+  let allTab = document.getElementById("all");
+  allTab.classList.add("active");
+  let activeTab = document.querySelector(".task-tabs .active");
+  if (activeTab) {
+    horizontalIndicator({ currentTarget: activeTab });
+  }
+});
+
+window.addEventListener("resize", function () {
+  let activeTab = document.querySelector(".task-tabs .active");
+  if (activeTab) {
+    horizontalIndicator({ currentTarget: activeTab });
+  }
+});
+
+tabs.forEach((menu) =>
+  menu.addEventListener("click", (e) => horizontalIndicator(e))
+);
+
+function horizontalIndicator(e) {
+  underLine.style.left = e.currentTarget.offsetLeft + "px";
+  underLine.style.width = e.currentTarget.offsetWidth + "px";
+  underLine.style.top =
+    e.currentTarget.offsetTop + e.currentTarget.offsetHeight + "px";
+}
+
 let taskList = [];
 let mode = "all";
 let filterList = [];
 let list = [];
 addButton.addEventListener("click", addTask);
+taskInput.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    // 엔터키가 눌렸을 때만 addTask 함수를 호출합니다.
+    addTask();
+    // 기본 이벤트를 방지하여 폼 제출을 막습니다.
+    event.preventDefault();
+  }
+});
 
 for (let i = 1; i < tabs.length; i++) {
   tabs[i].addEventListener("click", function (event) {
@@ -56,7 +93,7 @@ function render() {
       resultHTML += `<div class="task">
       <div class="task-done">${list[i].taskContent}</div>
       <div>
-        <button onClick="toggleComplete('${list[i].id}')">Check</button>
+        <img src="images/check.png" onClick="toggleComplete('${list[i].id}')"/>
         <button onClick="deleteTask('${list[i].id}')">Delete</button>
       </div>
     </div>`;
@@ -64,7 +101,7 @@ function render() {
       resultHTML += `<div class="task">
       <div>${list[i].taskContent}</div>
       <div>
-        <button onClick="toggleComplete('${list[i].id}')">Check</button>
+      <img src="images/check.png" onClick="toggleComplete('${list[i].id}')"/>
         <button onClick="deleteTask('${list[i].id}')">Delete</button>
       </div>
     </div>`;
@@ -72,7 +109,7 @@ function render() {
       resultHTML += `<div class="task">
     <div>${list[i].taskContent}</div>
     <div>
-      <button onClick="toggleComplete('${list[i].id}')">Check</button>
+    <img src="images/check.png" alt="Check" class="task-button-img" onClick="toggleComplete('${list[i].id}')"/>
       <button onClick="deleteTask('${list[i].id}')">Delete</button>
     </div>
   </div>`;
