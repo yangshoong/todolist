@@ -3,6 +3,7 @@ body {
   background-image: url("images/background.webp");
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }
 
 .container {
