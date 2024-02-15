@@ -12,6 +12,7 @@ body {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
     rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
+
 .task-area {
   border: 1px solid lightgray;
 }
@@ -36,7 +37,7 @@ body {
   left: 0px;
   top: 80px;
   padding: 0px;
-  transition: 0.5s;
+  transition: 0.2s;
   border-radius: 3px;
 }
 
@@ -46,6 +47,12 @@ body {
   padding: 1em;
 }
 
+.task-done-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  background-color: rgba(222, 213, 226, 0.5);
+}
 .task-done {
   text-decoration: line-through;
 }

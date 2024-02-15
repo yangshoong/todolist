@@ -1,14 +1,3 @@
-// 유저가 값을 입력한다.
-// + 버튼을 클릭하면, 할일이 추가된다
-// delete 버튼을 누르면 할일이 삭제된다
-// check 버튼을 누르면 할일이 끝나면서 밑줄이 간다
-// 1. check 버튼을 클릭하는 순간 true를false로
-// 2. true이면 끝난걸로 간주하고 및줄
-// 3. false이면 안끝난걸로 간주하고 그대로
-// 진행중 끝남 탭을 누르면, 언더바가 이동한다.
-// 끝남탭은, 끝난 아이템만, 진행중 탭은 진행중인 아이템만
-// 전체탭을 누르면 다시 전체 아이템으로 돌아옴.
-
 let taskInput = document.getElementById("task-input");
 let addButton = document.getElementById("add-button");
 let tabs = document.querySelectorAll(".task-tabs div");
@@ -48,9 +37,7 @@ let list = [];
 addButton.addEventListener("click", addTask);
 taskInput.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
-    // 엔터키가 눌렸을 때만 addTask 함수를 호출합니다.
     addTask();
-    // 기본 이벤트를 방지하여 폼 제출을 막습니다.
     event.preventDefault();
   }
 });
@@ -68,33 +55,27 @@ function addTask() {
     isComplete: false,
   };
   taskList.push(task);
-  console.log(taskList);
+  taskInput.value = '';
   render();
 }
 
 function render() {
   list = [];
-  // 1. 내가 선택한 탭에 따라서
   if (mode === "all") {
     list = taskList;
-    // taskList
   } else if (mode === "ongoing") {
     list = filterList;
-    // filterList
   } else if (mode === "done") {
     list = filterList;
   }
-  // 2. 리스트를 달리 보여준다.
-  // all taskList
-  // ongoing, done   filterList
   let resultHTML = "";
   for (let i = 0; i < list.length; i++) {
     if (list[i].isComplete == true) {
-      resultHTML += `<div class="task">
+      resultHTML += `<div class="task task-done-line" >
       <div class="task-done">${list[i].taskContent}</div>
       <div>
-        <img src="images/check.png" onClick="toggleComplete('${list[i].id}')"/>
-        <button onClick="deleteTask('${list[i].id}')">Delete</button>
+        <img src="images/undo.png" onClick="toggleComplete('${list[i].id}')"/>
+        <img src="images/trash.png" onClick="deleteTask('${list[i].id}')"/>
       </div>
     </div>`;
     } else if (list[i].isComplete == false) {
@@ -102,7 +83,7 @@ function render() {
       <div>${list[i].taskContent}</div>
       <div>
       <img src="images/check.png" onClick="toggleComplete('${list[i].id}')"/>
-        <button onClick="deleteTask('${list[i].id}')">Delete</button>
+      <img src="images/trash.png" onClick="deleteTask('${list[i].id}')"/>
       </div>
     </div>`;
     } else {
@@ -110,7 +91,7 @@ function render() {
     <div>${list[i].taskContent}</div>
     <div>
     <img src="images/check.png" alt="Check" class="task-button-img" onClick="toggleComplete('${list[i].id}')"/>
-      <button onClick="deleteTask('${list[i].id}')">Delete</button>
+    <img src="images/trash.png" onClick="deleteTask('${list[i].id}')"/>
     </div>
   </div>`;
     }
@@ -127,7 +108,6 @@ function toggleComplete(id) {
     }
   }
   render();
-  console.log(taskList);
 }
 
 function deleteTask(id) {
@@ -145,10 +125,8 @@ function filter(event) {
   mode = event.target.id;
   filterList = [];
   if (mode === "all") {
-    //전체리스트를 보여준다.
     render();
   } else if (mode === "ongoing") {
-    //진행중인 아이템을 보여준다.
     for (let i = 0; i < list.length; i++) {
       if (taskList[i].isComplete === false) {
         filterList.push(taskList[i]);
@@ -156,10 +134,7 @@ function filter(event) {
     }
     console.log(filterList);
     render();
-    //task.iscomplete=false
   } else if (mode === "done") {
-    //끝나는 케이스
-    //task.isComplete=true
     for (let i = 0; i < taskList.length; i++) {
       if (taskList[i].isComplete === true) {
         filterList.push(taskList[i]);
