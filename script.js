@@ -32,7 +32,8 @@ function horizontalIndicator(e) {
 
 let taskList = [];
 let mode = "all";
-let filterList = [];
+let ongoingList = [];
+let doneList = [];
 let list = [];
 
 
@@ -41,9 +42,9 @@ function render() {
   if (mode === "all") {
     list = taskList;
   } else if (mode === "ongoing") {
-    list = filterList;
+    list = ongoingList;
   } else if (mode === "done") {
-    list = filterList;
+    list = doneList;
   }
 
   let resultHTML = "";
@@ -80,24 +81,25 @@ function render() {
 
 function filter(event) {
   mode = event.target.id;
-  filterList = [];
+  ongoingList = [];
+  doneList = [];
   if (mode === "all") {
     // render();
   } else if (mode === "ongoing") {
     for (let i = 0; i < taskList.length; i++) {
       if (taskList[i].isComplete === false) {
-        filterList.push(taskList[i]);
+        ongoingList.push(taskList[i]);
       }
     }
     // render();
   } else if (mode === "done") {
     for (let i = 0; i < taskList.length; i++) {
       if (taskList[i].isComplete === true) {
-        filterList.push(taskList[i]);
+        doneList.push(taskList[i]);
       }
     }
     // render();
-  } 
+  }
   // render();
 }
 
@@ -115,7 +117,7 @@ function addTask() {
     isComplete: false,
   };
   taskList.push(task);
-  filterList=taskList.filter(task => task.isComplete==false);
+  ongoingList = taskList.filter(task => task.isComplete == false);
   taskInput.value = '';
   render();
 }
@@ -133,7 +135,7 @@ addButton.addEventListener("click", function (event) {
 
 taskInput.addEventListener("keypress", function (event) {
   if (event.key === "Enter") {
-    if(taskInput.value.trim()===""){
+    if (taskInput.value.trim() === "") {
       alert("내용을 입력해주세요");
       return;
     }
@@ -164,7 +166,8 @@ function deleteTask(id) {
   for (let i = 0; i < taskList.length; i++) {
     if (taskList[i].id == id) {
       taskList.splice(i, 1);
-      filterList=filterList.filter(task => task.id!==id);
+      ongoingList = ongoingList.filter(task => task.id !== id);
+      doneList = doneList.filter(task => task.id !== id);
       break;
     }
   }
