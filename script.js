@@ -118,6 +118,7 @@ function addTask() {
   };
   taskList.push(task);
   ongoingList = taskList.filter(task => task.isComplete == false);
+  doneList = taskList.filter(task => task.isComplete == true);
   taskInput.value = '';
   render();
 }
@@ -156,6 +157,8 @@ function toggleComplete(id) {
   for (let i = 0; i < taskList.length; i++) {
     if (taskList[i].id == id) {
       taskList[i].isComplete = !taskList[i].isComplete;
+      ongoingList = ongoingList.filter(task => task.id !== id);
+      doneList = doneList.filter(task => task.id !== id);
       break;
     }
   }
